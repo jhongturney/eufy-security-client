@@ -8504,7 +8504,7 @@ export class Station extends TypedEmitter<StationEvents> {
         device.getChannel(),
         this.p2pSession.incLockSequenceNumber(),
         value,
-        propertyData,
+        propertyData
       );
     } else if (
       device.isLockWifiT8506() ||

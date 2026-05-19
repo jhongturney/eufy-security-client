@@ -444,7 +444,7 @@ export class EufySecurity extends TypedEmitter<EufySecurityEvents> {
         authToken,
         userId,
         this.persistentData.openudid,
-        this.config.country || "US",
+        this.config.country || "US"
       );
 
       this.securityMqttService.on("connect", () => {
@@ -470,7 +470,10 @@ export class EufySecurity extends TypedEmitter<EufySecurityEvents> {
             }
           })
           .catch((err) => {
-            rootMainLogger.debug("SecurityMQTT lock status update failed - device not found", { deviceSN, error: getError(ensureError(err)) });
+            rootMainLogger.debug("SecurityMQTT lock status update failed - device not found", {
+              deviceSN,
+              error: getError(ensureError(err)),
+            });
           });
       });
 
@@ -865,7 +868,7 @@ export class EufySecurity extends TypedEmitter<EufySecurityEvents> {
                   channel: number,
                   sequence: number,
                   lock: boolean,
-                  _property: PropertyData,
+                  _property: PropertyData
                 ) => this.onSecurityMqttCommand(deviceSN, adminUserId, shortUserId, nickName, channel, sequence, lock)
               );
               this.addStation(station);
@@ -2460,7 +2463,7 @@ export class EufySecurity extends TypedEmitter<EufySecurityEvents> {
                 device.isLockWifiT8510P() ||
                 device.isLockWifiT8520P() ||
                 device.isLockWifiT85L0() ||
-              !device.isLockWifiT85D0()) &&
+                !device.isLockWifiT85D0()) &&
               result.command_type !== CommandType.CMD_DOORLOCK_SET_PUSH_MODE)
           ) {
             if (device.hasProperty(result.customData.property.name)) {
@@ -2971,7 +2974,7 @@ export class EufySecurity extends TypedEmitter<EufySecurityEvents> {
     nickName: string,
     channel: number,
     sequence: number,
-    lock: boolean,
+    lock: boolean
   ): void {
     if (!this.securityMqttService || !this.securityMqttService.isConnected()) {
       rootMainLogger.error("SecurityMQTT not connected, cannot send lock command", { deviceSN });
@@ -2979,25 +2982,23 @@ export class EufySecurity extends TypedEmitter<EufySecurityEvents> {
     }
     const device = this.devices[deviceSN];
     const deviceModel = device ? device.getModel() : deviceSN;
-    this.securityMqttService.lockDevice(
-      deviceSN,
-      deviceModel,
-      adminUserId,
-      shortUserId,
-      nickName,
-      channel,
-      sequence,
-      lock,
-    ).then((success) => {
-      if (success) {
-        // Optimistically update lock state
-        this.getDevice(deviceSN).then((device) => {
-          device.updateProperty(PropertyName.DeviceLocked, lock);
-        }).catch(() => { /* device not found, ignore */ });
-      }
-    }).catch((err) => {
-      rootMainLogger.error("SecurityMQTT lock command error", { error: getError(ensureError(err)) });
-    });
+    this.securityMqttService
+      .lockDevice(deviceSN, deviceModel, adminUserId, shortUserId, nickName, channel, sequence, lock)
+      .then((success) => {
+        if (success) {
+          // Optimistically update lock state
+          this.getDevice(deviceSN)
+            .then((device) => {
+              device.updateProperty(PropertyName.DeviceLocked, lock);
+            })
+            .catch(() => {
+              /* device not found, ignore */
+            });
+        }
+      })
+      .catch((err) => {
+        rootMainLogger.error("SecurityMQTT lock command error", { error: getError(ensureError(err)) });
+      });
   }
 
   private onStationRuntimeState(station: Station, channel: number, batteryLevel: number, temperature: number): void {
