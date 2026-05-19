@@ -99,6 +99,7 @@ export enum DeviceType {
   LOCK_8531 = 189,
   LOCK_85D0 = 202,
   LOCK_85L0 = 201,
+  LOCK_85D0 = 202,
   LOCK_85V0 = 203,
   WALL_LIGHT_CAM_81A0 = 10005,
   INDOOR_PT_CAMERA_C220 = 10008, // T8W11C
@@ -10582,7 +10583,14 @@ export const DeviceCommands: Commands = {
     CommandName.DeviceUpdateUserSchedule,
     CommandName.DeviceUpdateUsername,
   ],
-  [DeviceType.LOCK_85D0]: [CommandName.DeviceLockCalibration],
+  [DeviceType.LOCK_85D0]: [
+    CommandName.DeviceLockCalibration,
+    CommandName.DeviceAddUser,
+    CommandName.DeviceDeleteUser,
+    CommandName.DeviceUpdateUserPasscode,
+    CommandName.DeviceUpdateUserSchedule,
+    CommandName.DeviceUpdateUsername,
+  ],
   [DeviceType.LOCK_8502]: [
     CommandName.DeviceLockCalibration,
     CommandName.DeviceAddUser,

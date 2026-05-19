@@ -2565,7 +2565,8 @@ export class Device extends TypedEmitter<DeviceEvents> {
       sn.startsWith("T8504") ||
       sn.startsWith("T8506") ||
       sn.startsWith("T85L0") ||
-      sn.startsWith("T8530")
+      sn.startsWith("T8530") ||
+      sn.startsWith("T85D0")
     );
   }
 
@@ -2618,6 +2619,10 @@ export class Device extends TypedEmitter<DeviceEvents> {
   static isSmartTrack(type: number): boolean {
     if (type == DeviceType.SMART_TRACK_LINK || type == DeviceType.SMART_TRACK_CARD) return true;
     return false;
+  }
+
+  static usesSecurityMqtt(type: number): boolean {
+    return Device.isLockWifiT85D0(type) || Device.isLockWifiT85L0(type);
   }
 
   public isCamera(): boolean {
@@ -2710,6 +2715,10 @@ export class Device extends TypedEmitter<DeviceEvents> {
 
   public isLockWifiT8502(): boolean {
     return Device.isLockWifiT8502(this.rawDevice.device_type);
+  }
+
+  public isLockWifiT85D0(): boolean {
+    return Device.isLockWifiT85D0(this.rawDevice.device_type);
   }
 
   public isLockWifiT8510P(): boolean {
@@ -2952,6 +2961,10 @@ export class Device extends TypedEmitter<DeviceEvents> {
 
   public hasBattery(): boolean {
     return Device.hasBattery(this.rawDevice.device_type);
+  }
+
+  public usesSecurityMqtt(): boolean {
+    return Device.usesSecurityMqtt(this.rawDevice.device_type);
   }
 
   public getDeviceKey(): string {
