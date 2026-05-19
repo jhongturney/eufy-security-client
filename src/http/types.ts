@@ -97,7 +97,6 @@ export enum DeviceType {
   LOCK_8502 = 180,
   LOCK_8506 = 184,
   LOCK_8531 = 189,
-  LOCK_85D0 = 202,
   LOCK_85L0 = 201,
   LOCK_85D0 = 202,
   LOCK_85V0 = 203,
